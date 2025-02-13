@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Letter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        body {
+            background-color: pink;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        .envelope {
+            width: 200px;
+            height: 130px;
+            background: #ff6699;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            animation: float 3s infinite ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid black;
+            border-radius: 10px;
+        }
+        .envelope:before {
+            content: "";
+            position: absolute;
+            top: -65px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 65px solid #ff6699;
+            border-top: none;
+        }
+        .heart {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 45px;
+            left: 75px;
+            transform: rotate(-45deg);
+        }
+        .heart:before,
+        .heart:after {
+            content: "";
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart:before {
+            top: -25px;
+            left: 0;
+        }
+        .heart:after {
+            left: 25px;
+            top: 0;
+        }
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-20px); }
+            100% { transform: translate(-50%, -50%) translateY(0); }
+        }
+        .letter {
+            display: block;
+            opacity: 0;
+            width: 350px;
+            height: 350px;
+            background: rgb(234, 105, 135);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-family: 'Dancing Script', cursive;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .letter.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .close-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            border: none;
+            background-color: red;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .floating-element {
+            position: absolute;
+            font-size: 50px;
+            animation: floatUp 4s infinite ease-in-out;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-200px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bg-music" src="trimmed_song copy.mp3"></audio>
+    <div class="envelope" onclick="openLetter()">
+        <div class="heart"></div>
+    </div>
+    <div class="letter" id="letter">
+        <h2>Happy Valentine's Day</h2>
+        <p><i>I hope you find this virtual letter well</i></p>
+        <p><i>I hope you're doing great</i></p>
+        <p><i>Let me spare a minute to tell that I appreciate you for being the reason why I wanted to be better everyday</i></p>
+        <p><i>I hope you remember that you always got me when your days are gloomy</i></p>
+        <p><i><b>I will always be here for you</b></i></p>
+        <button class="close-btn" onclick="closeLetter()">Close</button>
+    </div>
+
+    <script>
+        function openLetter() {
+            document.querySelector('.envelope').style.display = 'none';
+            let letter = document.getElementById('letter');
+            letter.classList.add('show');
+            createFloatingElements();
+            document.getElementById('bg-music').play();
+        }
+        function closeLetter() {
+            let letter = document.getElementById('letter');
+            letter.classList.remove('show');
+            setTimeout(() => {
+                document.querySelector('.envelope').style.display = 'flex';
+            }, 500);
+            document.getElementById('bg-music').pause();
+        }
+        function createFloatingElements() {
+            for (let i = 0; i < 100; i++) { // Increased number of hearts
+                let element = document.createElement('div');
+                element.innerHTML = '❤️';
+                element.className = 'floating-element';
+                element.style.left = Math.random() * window.innerWidth + 'px';
+                element.style.top = window.innerHeight + 'px';
+                document.body.appendChild(element);
+                setTimeout(() => element.remove(), 4000);
+            }
+        }
+    </script>
+</body>
+</html>
